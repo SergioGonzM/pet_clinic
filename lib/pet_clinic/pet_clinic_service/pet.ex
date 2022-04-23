@@ -22,3 +22,4 @@ defmodule PetClinic.PetClinicService.Pet do
     |> validate_inclusion(:age, 1..100)
   end
 end
+

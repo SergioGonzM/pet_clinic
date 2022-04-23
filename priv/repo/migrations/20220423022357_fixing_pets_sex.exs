@@ -16,3 +16,4 @@ defmodule PetClinic.Repo.Migrations.FixingPetsSex do
     Ecto.Adapters.SQL.query!(Repo, query, [])
   end
 end
+
