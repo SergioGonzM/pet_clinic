@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assets/css/show_health_expert.css">
+</head>
+<h1>Show Pet Health Expert</h1>
+<body>
+    <section>
+        <main>
+            <div class="contenedor">
+                <img class="circular_square" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Veterinary_symbol.svg/1200px-Veterinary_symbol.svg.png" alt="Veterinary_symbol.png">
+                <div class="name">
+                    <strong>Name:</strong>
+                    <%= @pet_health_expert.name %>
+                </div>
+                <div class="age">
+                    <strong>Age:</strong>
+                    <%= @pet_health_expert.age %>
+                </div>
+                <div class="email">
+                    <strong>Email:</strong>
+                    <%= @pet_health_expert.email %>
+                </div>
+                <div>
+                    <strong>Specialities</strong>
+                    <%= @pet_health_expert.specialities %>
+                </div>
+                <div class="sex">
+                    <strong>Sex:</strong>
+                    <%= @pet_health_expert.sex %>
+                </div>
+            </div>
+        </main>
+    </section>
+    <footer class="button_group">
+      <span class="button_1"><%= link "Edit", to: Routes.pet_health_expert_path(@conn, :edit, @pet_health_expert) %> </span> 
+      <span class="button_2"><%= link "Back", to: Routes.pet_health_expert_path(@conn, :index) %></span>
+    </footer>
+</body>
+</html>
+
+
+

@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assets/css/show_health_expert.css">
+</head>
+<h1>Show Pet</h1>
+<body>
+    <section>
+        <main>
+            <div class="contenedor">
+                <img class="circular_square" src="https://imagenpng.com/wp-content/uploads/2016/09/Grupo-perros1.png" alt="Veterinary_symbol.png">
+                <div class="name">
+                    <strong>Name:</strong>
+                    <%= @pet.name %>
+                </div>
+                <div class="age">
+                    <strong>Age:</strong>
+                    <%= @pet.age %>
+                </div>
+                <div class="email">
+                    <strong>Type:</strong>
+                    <%= @pet.type %>
+                </div>
+                <div class="sex">
+                    <strong>Sex:</strong>
+                    <%= @pet.sex %>
+                </div>
+            </div>
+        </main>
+    </section>
+    <footer>
+      <span class="button_1"><%= link "Edit", to: Routes.pet_path(@conn, :edit, @pet) %></span> 
+      <span><%= link "Back", to: Routes.pet_path(@conn, :index) %></span>
+    </footer>
+</body>
+</html>
