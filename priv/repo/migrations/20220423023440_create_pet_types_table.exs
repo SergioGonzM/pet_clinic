@@ -7,7 +7,11 @@ defmodule PetClinic.Repo.Migrations.CreatePetTypesTable do
 
   def change do
 
-    pets = Repo.all(Pet)
+    pets = from(p in "pets", select: %{type: p.type, id: p.id}) 
+      |> Repo.all() 
+      |> Enum.map(fn pet -> %{pet | type: pet.type 
+      |> String.downcase()} 
+    end)
     types = Repo.all(from p in Pet, select: [p.type], distinct: true) |> List.flatten()
 
     create table("pet_types") do
@@ -26,25 +30,10 @@ defmodule PetClinic.Repo.Migrations.CreatePetTypesTable do
 
     flush()
 
-    Enum.map(pets, fn pet -> 
-      %Species{id: sp_id} = Species |> Repo.get_by(name: pet.type)
-      q = "UPDATE pets SET species = $1 WHERE id = $2;"
-      Repo.query!(q, [sp_id, pet.id])
-    end
-
-
-
-    alter table(:pets) do
-      remove :species
-      add :species_id, references(:species)
-    end
-
-    flush()
-
     Enum.each(pets, fn pet ->
       %PetType{id: pet_type_id} = Repo.get_by(PetType, name: pet.type)
       update = "UPDATE pets SET type_id = $1 WHERE id = $2"
-      Repo.query!(update, [pet.species_id, pet.id])
+      Repo.query!(update, [pet.type_id, pet.id])
     end)
 
   end
