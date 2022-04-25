@@ -21,7 +21,7 @@ defmodule PetClinic.Repo.Migrations.CreatePetTypesTable do
     
     flush()
 
-    Enum.map(pet_types, fn t -> Repo.insert(PetType{name: t})end)
+    Enum.map(types, fn t -> Repo.insert(%PetType{name: t})end)
 
     alter table("pets") do
       remove :type
@@ -33,7 +33,7 @@ defmodule PetClinic.Repo.Migrations.CreatePetTypesTable do
     Enum.each(pets, fn pet ->
       %PetType{id: pet_type_id} = Repo.get_by(PetType, name: pet.type)
       update = "UPDATE pets SET type_id = $1 WHERE id = $2"
-      Repo.query!(update, [pet.type_id, pet.id])
+      Repo.query!(update, [pet_type_id, pet.id])
     end)
 
   end
