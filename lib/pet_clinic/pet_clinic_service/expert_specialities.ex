@@ -3,9 +3,8 @@ defmodule PetClinic.PetClinicService.ExpertSpecialities do
     import Ecto.Changeset
   
     schema "expert_specialities" do
-      has_many :pet_health_expert, PetClinic.PetClinicService.PetHealthExpert, foreign_key: :preferred_expert_id
-
-      has_many :pet_type, PetClinic.PetClinicService.PetType
+      belongs_to :pet_health_expert, PetClinic.PetClinicService.PetHealthExpert #creo que tengo que agregar el foregin key
+      belongs_to :pet_type, PetClinic.PetClinicService.PetType
   
       timestamps()
     end

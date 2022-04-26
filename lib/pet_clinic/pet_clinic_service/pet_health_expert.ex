@@ -8,6 +8,8 @@ defmodule PetClinic.PetClinicService.PetHealthExpert do
     field :name, :string
     field :sex, Ecto.Enum, values: [:male, :female]
     field :specialities, :string
+    #quitar cuando haga la migracion
+    #many_to_many :specialities, PetClinic.PetClinicService.PetType, join_through PetClinic.PetClinicService.ExpertSpecialities
 
     has_many :patients, PetClinic.PetClinicService.Pet, foreign_key: :preferred_expert_id
 
