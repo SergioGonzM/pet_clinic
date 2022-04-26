@@ -1,8 +1,11 @@
 defmodule PetClinic.Repo.Migrations.CreateExpertSpecialitiesTable do
   use Ecto.Migration
+  import Ecto.Query
 
   def change do
-    specialities = Repo.all(from h in PetHealthExpert, select: [h.id, h.specialities])
+    experts = Repo.all(from e in PetHealthExpert, select: %{id: e.id, specialities: e.specialities}) 
+    |> Enum.map(fn e -> %{e | specialities: e.specialities 
+                            |> String.split([" ", ","], trim: true)} end) 
 
     create table "expert_specialities" do
       add :health_expert_id, references("pethealthexperts")
@@ -12,27 +15,16 @@ defmodule PetClinic.Repo.Migrations.CreateExpertSpecialitiesTable do
 
     flush()
 
-    #primero necesito guardar las especialidades que ya estan en la bd:
-    sp = all |> Enum.map(fn e -> [Enum.at(e, 0) | Enum.at(e, 1) |> String.split(",", trim: true)] end)
-    |> Repo.insert(%{})
-
-
-    #Segunda opcion
-    #all |> Enum.map(fn e -> [w | a] = [Enum.at(e, 0) | Enum.at(e, 1) |> String.split(",", trim: true)] end)
-    #de aqui solo faltaria hacer luego luego el Repo.insert(%ExpertSpecialities{pet_health_Expert_id: w, specialities: a})
-
-
-    #Tercera opcion
-    #all |> Enum.each(fn expert ->                                                  
-     # expert_id = Enum.at(expert, 0)                                           
-     # specialities = Enum.at(expert, 1) |> String.split([" ", ","], trim: true)end)
-     #Y de aqui tambien hacer el repo.insert
-
-
-    specialities |> Enum.each
+    #falta hacer el insert y borrar la columna en el pethealthexpert
+    experts |> Enum.each(fn e ->
+      Enum.each(e.specialities, fn spec ->
+        spec_id = from(p in "pet_types", where: p.name == ^spec, select: p.id) |> Repo.one!()
+        Repo.insert(%ExpertSpecialities{pet_health_expert_id: e.id, pet_type_id: spec_id})
+      end)
+    end)
 
     alter table "pethealthexperts" do
-      remove
+      remove :specialities
     end
   end
 end
