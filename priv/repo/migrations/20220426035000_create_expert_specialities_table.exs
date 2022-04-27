@@ -1,6 +1,9 @@
 defmodule PetClinic.Repo.Migrations.CreateExpertSpecialitiesTable do
   use Ecto.Migration
   import Ecto.Query
+  alias PetClinic.PetClinicService.ExpertSpecialities
+  alias PetClinic.PetClinicService.PetHealthExpert 
+  alias PetClinic.Repo
 
   def change do
     experts = Repo.all(from e in PetHealthExpert, select: %{id: e.id, specialities: e.specialities}) 
@@ -8,7 +11,7 @@ defmodule PetClinic.Repo.Migrations.CreateExpertSpecialitiesTable do
                             |> String.split([" ", ","], trim: true)} end) 
 
     create table "expert_specialities" do
-      add :health_expert_id, references("pethealthexperts")
+      add :pet_health_expert_id, references("pethealthexperts")
       add :pet_type_id, references("pet_types")
       timestamps()
     end
