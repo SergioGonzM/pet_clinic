@@ -15,7 +15,7 @@ defmodule PetClinic.PetClinicService.PetHealthExpert do
 
     has_many :appointments, PetClinic.AppointmentService.Appointment, foreign_key: :pet_health_expert_id
 
-    
+    has_one :schedule, PetClinic.AppointmentService.ExpertSchedule, foreign_key: :pet_health_expert_id
 
     timestamps()
   end

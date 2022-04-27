@@ -6,7 +6,7 @@ defmodule PetClinic.AppointmentService.ExpertSchedule do
     field :end_hour, :time
     field :start_hour, :time
 
-    
+    belongs_to :pet_health_expert, PetClinic.PetClinicService.PetHealthExpert
 
     timestamps()
   end
