@@ -1,0 +1,28 @@
+<h1>Listing Expert schedules</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Start hour</th>
+      <th>End hour</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for expert_schedule <- @expert_schedules do %>
+    <tr>
+      <td><%= expert_schedule.start_hour %></td>
+      <td><%= expert_schedule.end_hour %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.expert_schedule_path(@conn, :show, expert_schedule) %></span>
+        <span><%= link "Edit", to: Routes.expert_schedule_path(@conn, :edit, expert_schedule) %></span>
+        <span><%= link "Delete", to: Routes.expert_schedule_path(@conn, :delete, expert_schedule), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Expert schedule", to: Routes.expert_schedule_path(@conn, :new) %></span>
