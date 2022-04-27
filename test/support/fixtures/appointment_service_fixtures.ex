@@ -17,4 +17,19 @@ defmodule PetClinic.AppointmentServiceFixtures do
 
     appointment
   end
+
+  @doc """
+  Generate a expert_schedule.
+  """
+  def expert_schedule_fixture(attrs \\ %{}) do
+    {:ok, expert_schedule} =
+      attrs
+      |> Enum.into(%{
+        end_hour: ~T[14:00:00],
+        start_hour: ~T[14:00:00]
+      })
+      |> PetClinic.AppointmentService.create_expert_schedule()
+
+    expert_schedule
+  end
 end
