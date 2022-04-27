@@ -2,7 +2,7 @@ defmodule PetClinic.AppointmentService.Appointment do
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "appointmennts" do
+  schema "appointments" do
     belongs_to :pet, PetClinic.PetClinicService.Pet
     belongs_to :pet_health_expert, PetClinic.PetClinicService.PetHealthExpert
     field :datetime, :utc_datetime

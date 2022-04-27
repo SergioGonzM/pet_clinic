@@ -4,10 +4,10 @@ defmodule PetClinic.Repo.Migrations.CreateAppointmentsTable do
   def change do
 
     create table "appointments" do
-      add: pet_id, references("pets") 
-      add: pet_health_expert_id, references("pethealthexperts")
-      add: datetime, :utc_datetime
-      
+      add :pet_id, references("pets") 
+      add :pet_health_expert_id, references("pethealthexperts")
+      add :datetime, :utc_datetime
+
       timestamps()
     end
 
