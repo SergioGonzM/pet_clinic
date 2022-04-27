@@ -31,6 +31,7 @@ defmodule PetClinicWeb.Router do
     resources "/pets", PetController
     resources "/pethealthexperts", PetHealthExpertController
     resources "/owners", OwnerController
+    resources "/appointments", AppointmentController
   end
 
   # Other scopes may use custom stacks.
