@@ -1,7 +1,10 @@
 alias PetClinic.PetClinicService.Pet
 alias PetClinic.PetClinicService.Owner
 alias PetClinic.PetClinicService.PetHealthExpert
+alias PetClinic.AppointmentService.ExpertSchedule
+alias PetClinic.AppointmentService.Appointment
 alias PetClinic.Repo
-alias PetClinic.PetClinicServic
+alias PetClinic.PetClinicService
+alias PetClinic.AppointmentService 
 import Ecto.Query
 import Ecto.Changeset

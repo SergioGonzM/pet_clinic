@@ -7,6 +7,7 @@ defmodule PetClinic.AppointmentService do
   alias PetClinic.Repo
 
   alias PetClinic.AppointmentService.Appointment
+  alias PetClinic.PetClinicService.Pet
 
   @doc """
   Returns the list of appointments.
@@ -197,4 +198,56 @@ defmodule PetClinic.AppointmentService do
   def change_expert_schedule(%ExpertSchedule{} = expert_schedule, attrs \\ %{}) do
     ExpertSchedule.changeset(expert_schedule, attrs)
   end
+
+  def available_slots(expert_id, from_date, to_date) do
+    schedule = Repo.get_by(ExpertSchedule, pet_health_expert_id: expert_id) #verificar si existe el experto
+    
+    if(schedule == nil) do
+      {:error, "expert doesn't exist"} 
+    else
+      slots = block_hours(schedule.start_hour, schedule.end_hour) |> Enum.map(fn x -> Time.truncate(x, :second) end)
+      appointments = Repo.all(from a in Appointment, where: a.pet_health_expert_id == ^expert_id ,select: [a.datetime])
+
+
+      
+      slots_wo_appointments = 
+      Date.range(from_date, to_date) 
+      |> Map.new(fn d -> {d, slots 
+      |> Enum.filter(fn h -> [DateTime.new!(d, h)] not in appointments end)}end)
+
+      slots_wo_appointments
+    end
+  end
+
+  def new_appointment(expert_id, pet_id, datetime) do
+    cond do
+      Repo.get_by(ExpertSchedule, pet_health_expert_id: expert_id) == nil -> "expert doesn't exist"
+
+      Repo.get_by(Pet, id: pet_id) == nil -> "pet doesn't exist"
+
+      true -> 
+        date = NaiveDateTime.to_date(datetime)
+        time = NaiveDateTime.to_time(datetime)
+        spaces = available_slots(expert_id, date, date)
+
+        if time in Map.get(spaces, date)  do
+          appointment = %Appointment{pet_id: pet_id, pet_health_expert_id: expert_id, datetime: DateTime.from_naive!(datetime, "Etc/UTC")}
+          Repo.insert(appointment)
+        else
+          {:error, "Schedule not available, try another"}
+        end
+        
+    end
+  end
+
+  def block_hours(start_hour, end_hour) do
+    case Time.compare(start_hour, end_hour) do
+      :gt -> []
+      :eq -> [start_hour]
+      :lt -> 
+        r = Time.add(start_hour, 1800)
+        [start_hour | block_hours(r, end_hour)]
+    end
+  end
+
 end
