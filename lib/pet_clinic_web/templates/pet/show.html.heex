@@ -24,11 +24,19 @@
                 </div>
                 <div class="email">
                     <strong>Type:</strong>
-                    <%= @pet.type %>
+                    <%= @pet.type.name %>
                 </div>
                 <div class="sex">
                     <strong>Sex:</strong>
                     <%= @pet.sex %>
+                </div>
+                <div class="owner">
+                    <strong>Owner: </strong>
+                    <%= @owner.name %>
+                </div>
+                <div class="preferred_expert">
+                    <strong>Preferred Expert: </strong>
+                    <%= @expert.name %>
                 </div>
             </div>
         </main>
