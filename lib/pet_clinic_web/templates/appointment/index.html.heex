@@ -3,14 +3,17 @@
 <table>
   <thead>
     <tr>
-
-      <th></th>
+      <th>Expert</th>
+      <th>Pet</th>
+      <th>Datime</th>
     </tr>
   </thead>
   <tbody>
 <%= for appointment <- @appointments do %>
     <tr>
-
+    <td><%=appointment.pet_id%></td>
+    <td><%=appointment.pet_health_expert_id%></td>
+    <td><%=appointment.datetime%></td>
       <td>
         <span><%= link "Show", to: Routes.appointment_path(@conn, :show, appointment) %></span>
         <span><%= link "Edit", to: Routes.appointment_path(@conn, :edit, appointment) %></span>

@@ -27,7 +27,7 @@
                 </div>
                 <div>
                     <strong>Specialities</strong>
-                    <%= @pet_health_expert.specialities %>
+                    <%= @pet_health_expert.specialities |> Enum.map(fn sp -> sp.name <> " " end) %>
                 </div>
                 <div class="sex">
                     <strong>Sex:</strong>

@@ -3,6 +3,7 @@ defmodule PetClinicWeb.PetController do
 
   alias PetClinic.PetClinicService
   alias PetClinic.PetClinicService.Pet
+  alias PetClinic.AppointmentService.ExpertSchedule
 
   def index(conn, _params) do
     pets = PetClinicService.list_pets()
@@ -39,7 +40,7 @@ defmodule PetClinicWeb.PetController do
   def edit(conn, %{"id" => id}) do
     pet = PetClinicService.get_pet!(id)
     pet_types = PetClinicService.list_pet_types()
-    owners = owners = PetClinicService.list_owners()
+    owners = PetClinicService.list_owners()
     changeset = PetClinicService.change_pet(pet)
     experts = PetClinicService.list_pethealthexperts()
 
@@ -74,5 +75,10 @@ defmodule PetClinicWeb.PetController do
     pets_by_type = PetClinicService.list_pets_by_type(type)
     render(conn, "index_by_type.html", pets_by_type: pets_by_type)
   end
+
+  #def schedule_by_expert((conn, %{"id" => id}, %{"schedule" => schedule})) do
+  #  expert = PetClinicService.get_pet_health_expert!(id)
+  #  schedule = ExpertSchedule
+  #end
 
 end

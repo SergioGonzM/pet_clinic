@@ -251,5 +251,4 @@ defmodule PetClinic.AppointmentService do
     
     Enum.map(start_hour..end_hour//1800, fn x -> Time.from_seconds_after_midnight(x)end)
   end
-
 end

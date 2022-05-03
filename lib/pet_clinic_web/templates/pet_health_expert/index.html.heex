@@ -7,7 +7,6 @@
       <th>Age</th>
       <th>Email</th>
       <th>Specialities</th>
-      <th>Sex</th>
 
       <th></th>
     </tr>
@@ -18,8 +17,7 @@
       <td><%= pet_health_expert.name %></td>
       <td><%= pet_health_expert.age %></td>
       <td><%= pet_health_expert.email %></td>
-      <td><%= pet_health_expert.specialities %></td>
-      <td><%= pet_health_expert.sex %></td>
+      <td><%= pet_health_expert.specialities |> Enum.map(&(&1.name <> " ")) %></td>
 
       <td>
         <span><%= link "Show", to: Routes.pet_health_expert_path(@conn, :show, pet_health_expert) %></span>

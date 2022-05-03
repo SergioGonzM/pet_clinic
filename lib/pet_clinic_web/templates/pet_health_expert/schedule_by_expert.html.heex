@@ -1,0 +1,23 @@
+<h1> Appointments for <%=@expert.name%> </h1>
+<table>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Time</th>
+      <th>Patient</th>
+      <th>Type</th>
+      <th>Owner</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for appointment <- @app do %>
+        <tr>
+        <td><%= DateTime.to_date(appointment.datetime) %></td>
+        <td><%= DateTime.to_time(appointment.datetime) %></td>
+        <td><%= appointment.pet.name %></td>
+        <td><%= Enum.find(@pet, fn p -> appointment.pet_id == p.id end).type.name %></td>
+        <td><%= Enum.find(@owner, fn o -> o.id == Enum.find(@pet, &(appointment.pet_id == &1.id)).owner_id end).name %></td>
+        </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -122,7 +122,7 @@ defmodule PetClinic.PetClinicService do
 
   """
   def list_pethealthexperts do
-    Repo.all(PetHealthExpert)
+    Repo.all(PetHealthExpert) |> Repo.preload(:specialities)
   end
 
   @doc """
@@ -139,7 +139,11 @@ defmodule PetClinic.PetClinicService do
       ** (Ecto.NoResultsError)
 
   """
-  def get_pet_health_expert!(id), do: Repo.get!(PetHealthExpert, id)
+  def get_pet_health_expert!(id), do: Repo.get!(PetHealthExpert, id) |> Repo.preload(:specialities)
+
+  def get_preload_expert!(id, preloads: preloads) do
+    Repo.get!(PetHealthExpert, id) |> Repo.preload(preloads)
+  end
 
   @doc """
   Creates a pet_health_expert.
