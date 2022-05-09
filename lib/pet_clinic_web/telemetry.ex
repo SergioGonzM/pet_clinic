@@ -1,4 +1,8 @@
 defmodule PetClinicWeb.Telemetry do
+  @moduledoc """
+  The [:telemetry] library allows you to emit events at various stages of an application's lifecycle. 
+  You can then respond to these events by, among other things, aggregating them as metrics and sending the metrics data to a reporting destination.
+  """
   use Supervisor
   import Telemetry.Metrics
 

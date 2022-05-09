@@ -1,4 +1,7 @@
 defmodule PetClinic.AppointmentService.Appointment do
+  @moduledoc """
+  Defines the schema of the appointmets service
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

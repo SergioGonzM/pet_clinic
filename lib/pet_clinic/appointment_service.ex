@@ -209,7 +209,7 @@ defmodule PetClinic.AppointmentService do
 
       true -> 
         slots = block_hours(schedule.start_hour, schedule.end_hour) #|> Enum.map(fn x -> Time.truncate(x, :second) end)
-        appointments = Repo.all(from a in Appointment, where: a.pet_health_expert_id == ^expert_id ,select: [a.datetime])
+        appointments = Repo.all(from a in Appointment, where: a.pet_health_expert_id == ^expert_id , select: [a.datetime])
 
         slots_wo_appointments = 
         Date.range(from_date, to_date) 

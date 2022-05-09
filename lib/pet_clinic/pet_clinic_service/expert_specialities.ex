@@ -1,4 +1,7 @@
 defmodule PetClinic.PetClinicService.ExpertSpecialities do
+  @moduledoc """
+  Defines the schema of a expert specialities
+  """
     use Ecto.Schema
     import Ecto.Changeset
   
