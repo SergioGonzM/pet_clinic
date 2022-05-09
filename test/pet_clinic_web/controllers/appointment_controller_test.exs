@@ -51,7 +51,9 @@ defmodule PetClinicWeb.AppointmentControllerTest do
     setup [:create_appointment]
 
     test "redirects when data is valid", %{conn: conn, appointment: appointment} do
-      conn = put(conn, Routes.appointment_path(conn, :update, appointment), appointment: @update_attrs)
+      conn =
+        put(conn, Routes.appointment_path(conn, :update, appointment), appointment: @update_attrs)
+
       assert redirected_to(conn) == Routes.appointment_path(conn, :show, appointment)
 
       conn = get(conn, Routes.appointment_path(conn, :show, appointment))
@@ -59,7 +61,9 @@ defmodule PetClinicWeb.AppointmentControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn, appointment: appointment} do
-      conn = put(conn, Routes.appointment_path(conn, :update, appointment), appointment: @invalid_attrs)
+      conn =
+        put(conn, Routes.appointment_path(conn, :update, appointment), appointment: @invalid_attrs)
+
       assert html_response(conn, 200) =~ "Edit Appointment"
     end
   end

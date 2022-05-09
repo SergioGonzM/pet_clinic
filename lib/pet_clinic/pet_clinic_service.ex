@@ -103,12 +103,9 @@ defmodule PetClinic.PetClinicService do
     Pet.changeset(pet, attrs)
   end
 
-
   def list_pets_by_type(type) do
     Repo.all(from p in Pet, where: p.type == ^type)
   end
-
-
 
   alias PetClinic.PetClinicService.PetHealthExpert
 
@@ -139,7 +136,8 @@ defmodule PetClinic.PetClinicService do
       ** (Ecto.NoResultsError)
 
   """
-  def get_pet_health_expert!(id), do: Repo.get!(PetHealthExpert, id) |> Repo.preload(:specialities)
+  def get_pet_health_expert!(id),
+    do: Repo.get!(PetHealthExpert, id) |> Repo.preload(:specialities)
 
   def get_preload_expert!(id, preloads: preloads) do
     Repo.get!(PetHealthExpert, id) |> Repo.preload(preloads)
@@ -222,7 +220,7 @@ defmodule PetClinic.PetClinicService do
 
   """
   def list_owners do
-    Repo.all(Owner) 
+    Repo.all(Owner)
   end
 
   @doc """
@@ -309,5 +307,4 @@ defmodule PetClinic.PetClinicService do
   def list_pet_types() do
     Repo.all(PetType)
   end
-
 end

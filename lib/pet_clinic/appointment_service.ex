@@ -200,55 +200,75 @@ defmodule PetClinic.AppointmentService do
   end
 
   def available_slots(expert_id, from_date, to_date) do
-    schedule = Repo.get_by(ExpertSchedule, pet_health_expert_id: expert_id) #verificar si existe el experto
+    # verificar si existe el experto
+    schedule = Repo.get_by(ExpertSchedule, pet_health_expert_id: expert_id)
 
     cond do
-      schedule == nil -> {:error, "expert with id #{expert_id} doesn't exist"}
-      
-      Date.compare(from_date, to_date) == :gt -> {:error, "wrong date range, are you from the future?"}
+      schedule == nil ->
+        {:error, "expert with id #{expert_id} doesn't exist"}
 
-      true -> 
-        slots = block_hours(schedule.start_hour, schedule.end_hour) #|> Enum.map(fn x -> Time.truncate(x, :second) end)
-        appointments = Repo.all(from a in Appointment, where: a.pet_health_expert_id == ^expert_id , select: [a.datetime])
+      Date.compare(from_date, to_date) == :gt ->
+        {:error, "wrong date range, are you from the future?"}
 
-        slots_wo_appointments = 
-        Date.range(from_date, to_date) 
-        |> Map.new(fn d -> {d, slots 
-        |> Enum.filter(fn h -> [DateTime.new!(d, h)] not in appointments end)}end)
-  
-        slots_wo_appointments        
+      true ->
+        # |> Enum.map(fn x -> Time.truncate(x, :second) end)
+        slots = block_hours(schedule.start_hour, schedule.end_hour)
+
+        appointments =
+          Repo.all(
+            from a in Appointment,
+              where: a.pet_health_expert_id == ^expert_id,
+              select: [a.datetime]
+          )
+
+        slots_wo_appointments =
+          Date.range(from_date, to_date)
+          |> Map.new(fn d ->
+            {d,
+             slots
+             |> Enum.filter(fn h -> [DateTime.new!(d, h)] not in appointments end)}
+          end)
+
+        slots_wo_appointments
     end
   end
 
   def new_appointment(expert_id, pet_id, datetime) do
     cond do
-      Repo.get_by(ExpertSchedule, pet_health_expert_id: expert_id) == nil -> {:error, "expert with id #{expert_id} doesn't exist"}
+      Repo.get_by(ExpertSchedule, pet_health_expert_id: expert_id) == nil ->
+        {:error, "expert with id #{expert_id} doesn't exist"}
 
-      Repo.get_by(Pet, id: pet_id) == nil -> {:error, "pet with id #{pet_id} doesn't exist"}
+      Repo.get_by(Pet, id: pet_id) == nil ->
+        {:error, "pet with id #{pet_id} doesn't exist"}
 
-      NaiveDateTime.compare(datetime, NaiveDateTime.local_now()) == :lt -> {:error, "datetime is in the past"}
+      NaiveDateTime.compare(datetime, NaiveDateTime.local_now()) == :lt ->
+        {:error, "datetime is in the past"}
 
-      true -> 
+      true ->
         date = NaiveDateTime.to_date(datetime)
         time = NaiveDateTime.to_time(datetime)
         spaces = available_slots(expert_id, date, date)
 
-        if time in Map.get(spaces, date)  do
-          appointment = %Appointment{pet_id: pet_id, pet_health_expert_id: expert_id, datetime: DateTime.from_naive!(datetime, "Etc/UTC")}
+        if time in Map.get(spaces, date) do
+          appointment = %Appointment{
+            pet_id: pet_id,
+            pet_health_expert_id: expert_id,
+            datetime: DateTime.from_naive!(datetime, "Etc/UTC")
+          }
+
           Repo.insert(appointment)
         else
           {:error, "Schedule not available or already busy, try another"}
         end
-        
     end
   end
 
   def block_hours(start_hour, end_hour) do
-    [start_hour, end_hour] = 
-    [start_hour, end_hour] 
-    |> Enum.map(fn x -> Time.to_seconds_after_midnight(x) end)
-    |> Enum.map(fn e -> elem(e, 0) end)
-    
-    Enum.map(start_hour..end_hour//1800, fn x -> Time.from_seconds_after_midnight(x)end)
+    [start_hour, end_hour] =
+      [start_hour, end_hour]
+      |> Enum.map(fn x -> Time.to_seconds_after_midnight(x) end)
+      |> Enum.map(fn e -> elem(e, 0) end)
+
+    Enum.map(start_hour..end_hour//1800, fn x -> Time.from_seconds_after_midnight(x) end)
   end
 end

@@ -24,7 +24,7 @@ defmodule PetClinicWeb.Router do
   scope "/", PetClinicWeb do
     pipe_through :browser
 
-    get "/", PageController, :index 
+    get "/", PageController, :index
     get "/bar", PageController, :bar
     get "/pets/by_type/:type", PetController, :index_by_type
     get "/pethealthexperts/:id/schedule", PetHealthExpertController, :expert_appointments

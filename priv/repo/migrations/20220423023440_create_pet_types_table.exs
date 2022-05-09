@@ -6,22 +6,28 @@ defmodule PetClinic.Repo.Migrations.CreatePetTypesTable do
   alias PetClinic.PetClinicService.PetType
 
   def change do
+    pets =
+      from(p in "pets", select: %{type: p.type, id: p.id})
+      |> Repo.all()
+      |> Enum.map(fn pet ->
+        %{
+          pet
+          | type:
+              pet.type
+              |> String.downcase()
+        }
+      end)
 
-    pets = from(p in "pets", select: %{type: p.type, id: p.id}) 
-      |> Repo.all() 
-      |> Enum.map(fn pet -> %{pet | type: pet.type 
-      |> String.downcase()} 
-    end)
-    types = Repo.all(from p in Pet, select: [p.type], distinct: true) |> List.flatten()
+    types = Repo.all(from(p in Pet, select: [p.type], distinct: true)) |> List.flatten()
 
     create table("pet_types") do
       add :name, :string
       timestamps()
     end
-    
+
     flush()
 
-    Enum.map(types, fn t -> Repo.insert(%PetType{name: t})end)
+    Enum.map(types, fn t -> Repo.insert(%PetType{name: t}) end)
 
     alter table("pets") do
       remove :type
@@ -35,6 +41,5 @@ defmodule PetClinic.Repo.Migrations.CreatePetTypesTable do
       update = "UPDATE pets SET type_id = $1 WHERE id = $2"
       Repo.query!(update, [pet_type_id, pet.id])
     end)
-
   end
 end

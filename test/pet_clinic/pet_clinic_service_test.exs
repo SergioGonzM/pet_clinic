@@ -36,7 +36,13 @@ defmodule PetClinic.PetClinicServiceTest do
 
     test "update_pet/2 with valid data updates the pet" do
       pet = pet_fixture()
-      update_attrs = %{age: 43, name: "some updated name", sex: "some updated sex", type: "some updated type"}
+
+      update_attrs = %{
+        age: 43,
+        name: "some updated name",
+        sex: "some updated sex",
+        type: "some updated type"
+      }
 
       assert {:ok, %Pet{} = pet} = PetClinicService.update_pet(pet, update_attrs)
       assert pet.age == 43
@@ -81,9 +87,17 @@ defmodule PetClinic.PetClinicServiceTest do
     end
 
     test "create_pet_health_expert/1 with valid data creates a pet_health_expert" do
-      valid_attrs = %{age: 42, email: "some email", name: "some name", sex: "some sex", specialities: "some specialities"}
+      valid_attrs = %{
+        age: 42,
+        email: "some email",
+        name: "some name",
+        sex: "some sex",
+        specialities: "some specialities"
+      }
 
-      assert {:ok, %PetHealthExpert{} = pet_health_expert} = PetClinicService.create_pet_health_expert(valid_attrs)
+      assert {:ok, %PetHealthExpert{} = pet_health_expert} =
+               PetClinicService.create_pet_health_expert(valid_attrs)
+
       assert pet_health_expert.age == 42
       assert pet_health_expert.email == "some email"
       assert pet_health_expert.name == "some name"
@@ -92,14 +106,24 @@ defmodule PetClinic.PetClinicServiceTest do
     end
 
     test "create_pet_health_expert/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = PetClinicService.create_pet_health_expert(@invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} =
+               PetClinicService.create_pet_health_expert(@invalid_attrs)
     end
 
     test "update_pet_health_expert/2 with valid data updates the pet_health_expert" do
       pet_health_expert = pet_health_expert_fixture()
-      update_attrs = %{age: 43, email: "some updated email", name: "some updated name", sex: "some updated sex", specialities: "some updated specialities"}
 
-      assert {:ok, %PetHealthExpert{} = pet_health_expert} = PetClinicService.update_pet_health_expert(pet_health_expert, update_attrs)
+      update_attrs = %{
+        age: 43,
+        email: "some updated email",
+        name: "some updated name",
+        sex: "some updated sex",
+        specialities: "some updated specialities"
+      }
+
+      assert {:ok, %PetHealthExpert{} = pet_health_expert} =
+               PetClinicService.update_pet_health_expert(pet_health_expert, update_attrs)
+
       assert pet_health_expert.age == 43
       assert pet_health_expert.email == "some updated email"
       assert pet_health_expert.name == "some updated name"
@@ -109,14 +133,22 @@ defmodule PetClinic.PetClinicServiceTest do
 
     test "update_pet_health_expert/2 with invalid data returns error changeset" do
       pet_health_expert = pet_health_expert_fixture()
-      assert {:error, %Ecto.Changeset{}} = PetClinicService.update_pet_health_expert(pet_health_expert, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               PetClinicService.update_pet_health_expert(pet_health_expert, @invalid_attrs)
+
       assert pet_health_expert == PetClinicService.get_pet_health_expert!(pet_health_expert.id)
     end
 
     test "delete_pet_health_expert/1 deletes the pet_health_expert" do
       pet_health_expert = pet_health_expert_fixture()
-      assert {:ok, %PetHealthExpert{}} = PetClinicService.delete_pet_health_expert(pet_health_expert)
-      assert_raise Ecto.NoResultsError, fn -> PetClinicService.get_pet_health_expert!(pet_health_expert.id) end
+
+      assert {:ok, %PetHealthExpert{}} =
+               PetClinicService.delete_pet_health_expert(pet_health_expert)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        PetClinicService.get_pet_health_expert!(pet_health_expert.id)
+      end
     end
 
     test "change_pet_health_expert/1 returns a pet_health_expert changeset" do
@@ -143,7 +175,12 @@ defmodule PetClinic.PetClinicServiceTest do
     end
 
     test "create_owner/1 with valid data creates a owner" do
-      valid_attrs = %{age: 42, email: "some email", name: "some name", phone_num: "some phone_num"}
+      valid_attrs = %{
+        age: 42,
+        email: "some email",
+        name: "some name",
+        phone_num: "some phone_num"
+      }
 
       assert {:ok, %Owner{} = owner} = PetClinicService.create_owner(valid_attrs)
       assert owner.age == 42
@@ -158,7 +195,13 @@ defmodule PetClinic.PetClinicServiceTest do
 
     test "update_owner/2 with valid data updates the owner" do
       owner = owner_fixture()
-      update_attrs = %{age: 43, email: "some updated email", name: "some updated name", phone_num: "some updated phone_num"}
+
+      update_attrs = %{
+        age: 43,
+        email: "some updated email",
+        name: "some updated name",
+        phone_num: "some updated phone_num"
+      }
 
       assert {:ok, %Owner{} = owner} = PetClinicService.update_owner(owner, update_attrs)
       assert owner.age == 43

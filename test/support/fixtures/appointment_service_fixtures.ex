@@ -10,9 +10,7 @@ defmodule PetClinic.AppointmentServiceFixtures do
   def appointment_fixture(attrs \\ %{}) do
     {:ok, appointment} =
       attrs
-      |> Enum.into(%{
-
-      })
+      |> Enum.into(%{})
       |> PetClinic.AppointmentService.create_appointment()
 
     appointment

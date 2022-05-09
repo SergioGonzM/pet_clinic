@@ -10,15 +10,18 @@ defmodule PetClinic.PetClinicService.PetHealthExpert do
     field :email, :string
     field :name, :string
     field :sex, Ecto.Enum, values: [:male, :female]
-    #field :specialities, :string
-    #quitar cuando haga la migracion
-    many_to_many :specialities, PetClinic.PetClinicService.PetType, join_through: PetClinic.PetClinicService.ExpertSpecialities
+    # field :specialities, :string
+    # quitar cuando haga la migracion
+    many_to_many :specialities, PetClinic.PetClinicService.PetType,
+      join_through: PetClinic.PetClinicService.ExpertSpecialities
 
     has_many :patients, PetClinic.PetClinicService.Pet, foreign_key: :preferred_expert_id
 
-    has_many :appointments, PetClinic.AppointmentService.Appointment, foreign_key: :pet_health_expert_id
+    has_many :appointments, PetClinic.AppointmentService.Appointment,
+      foreign_key: :pet_health_expert_id
 
-    has_one :schedule, PetClinic.AppointmentService.ExpertSchedule, foreign_key: :pet_health_expert_id
+    has_one :schedule, PetClinic.AppointmentService.ExpertSchedule,
+      foreign_key: :pet_health_expert_id
 
     timestamps()
   end
@@ -30,4 +33,3 @@ defmodule PetClinic.PetClinicService.PetHealthExpert do
     |> validate_required([:name, :age, :email, :sex])
   end
 end
-

@@ -15,7 +15,13 @@ defmodule PetClinicWeb.PetController do
     pet_types = PetClinicService.list_pet_types()
     owners = PetClinicService.list_owners()
     experts = PetClinicService.list_pethealthexperts()
-    render(conn, "new.html", pet_types: pet_types, owners: owners, experts: experts, changeset: changeset)
+
+    render(conn, "new.html",
+      pet_types: pet_types,
+      owners: owners,
+      experts: experts,
+      changeset: changeset
+    )
   end
 
   def create(conn, %{"pet" => pet_params}) do
@@ -44,7 +50,13 @@ defmodule PetClinicWeb.PetController do
     changeset = PetClinicService.change_pet(pet)
     experts = PetClinicService.list_pethealthexperts()
 
-    render(conn, "edit.html", pet: pet, pet_types: pet_types, owners: owners, experts: experts, changeset: changeset)
+    render(conn, "edit.html",
+      pet: pet,
+      pet_types: pet_types,
+      owners: owners,
+      experts: experts,
+      changeset: changeset
+    )
   end
 
   def update(conn, %{"id" => id, "pet" => pet_params}) do
@@ -70,15 +82,13 @@ defmodule PetClinicWeb.PetController do
     |> redirect(to: Routes.pet_path(conn, :index))
   end
 
-
   def index_by_type(conn, %{"type" => type}) do
     pets_by_type = PetClinicService.list_pets_by_type(type)
     render(conn, "index_by_type.html", pets_by_type: pets_by_type)
   end
 
-  #def schedule_by_expert((conn, %{"id" => id}, %{"schedule" => schedule})) do
+  # def schedule_by_expert((conn, %{"id" => id}, %{"schedule" => schedule})) do
   #  expert = PetClinicService.get_pet_health_expert!(id)
   #  schedule = ExpertSchedule
-  #end
-
+  # end
 end

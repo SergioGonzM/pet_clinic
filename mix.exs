@@ -19,7 +19,8 @@ defmodule PetClinic.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {PetClinic.Application, []}, #punto de entrada de la aplicacion 
+      # punto de entrada de la aplicacion 
+      mod: {PetClinic.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end

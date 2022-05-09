@@ -9,9 +9,7 @@ defmodule PetClinicWeb.PageController do
     render(conn, "other_index.html")
   end
 
-  #def pets/by_type/:type(conn, _params) do
+  # def pets/by_type/:type(conn, _params) do
   #  render(conn, "index.html")
-  #end
-
-
+  # end
 end
