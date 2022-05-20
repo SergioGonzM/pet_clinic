@@ -3,7 +3,7 @@ defmodule PetClinic.PetClinicService.ExpertSpecialities do
   Defines the schema of a expert specialities
   """
   use Ecto.Schema
-  import Ecto.Changeset
+  #import Ecto.Changeset
 
   schema "expert_specialities" do
     # creo que tengo que agregar el foregin key
