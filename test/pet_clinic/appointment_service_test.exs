@@ -23,7 +23,7 @@ defmodule PetClinic.AppointmentServiceTest do
     test "create_appointment/1 with valid data creates a appointment" do
       valid_attrs = %{datetime: ~U[2022-04-26 01:58:00Z]}
 
-      assert {:ok, %Appointment{} = appointment} =
+      assert {:ok, %Appointment{} = _appointment} =
                AppointmentService.create_appointment(valid_attrs)
     end
 
@@ -35,7 +35,7 @@ defmodule PetClinic.AppointmentServiceTest do
       appointment = appointment_fixture()
       update_attrs = %{}
 
-      assert {:ok, %Appointment{} = appointment} =
+      assert {:ok, %Appointment{} = _appointment} =
                AppointmentService.update_appointment(appointment, update_attrs)
     end
 

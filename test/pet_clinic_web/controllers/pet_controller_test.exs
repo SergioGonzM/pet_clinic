@@ -3,20 +3,21 @@ defmodule PetClinicWeb.PetControllerTest do
 
   import PetClinic.PetClinicServiceFixtures
 
-  @update_attrs %{
-    age: 43,
-    name: "some updated name",
-    sex: :male,
-    owner_id: 1,
-    type_id: 2
-  }
+  # @update_attrs %{
+  #   age: 43,
+  #   name: "some updated name",
+  #   sex: :male,
+  #   owner_id: 1,
+  #   type_id: 2
+  # }
+
   @invalid_attrs %{age: nil, name: nil, sex: nil}
 
-  @create_attrs %{
-    age: 42,
-    name: "some name",
-    sex: :female
-  }
+  # @create_attrs %{
+  #   age: 42,
+  #   name: "some name",
+  #   sex: :female
+  # }
 
   describe "index" do
     test "lists all pets", %{conn: conn} do
