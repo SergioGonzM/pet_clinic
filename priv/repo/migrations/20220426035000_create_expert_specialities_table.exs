@@ -7,7 +7,7 @@ defmodule PetClinic.Repo.Migrations.CreateExpertSpecialitiesTable do
 
   def change do
     experts =
-      Repo.all(from(e in PetHealthExpert, select: %{id: e.id, specialities: e.specialities}))
+      Repo.all(from(e in "pethealthexperts", select: %{id: e.id, specialities: e.specialities}))
       |> Enum.map(fn e ->
         %{
           e

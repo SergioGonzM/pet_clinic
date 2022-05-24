@@ -18,7 +18,8 @@ defmodule PetClinic.Repo.Migrations.CreatePetTypesTable do
         }
       end)
 
-    types = Repo.all(from(p in Pet, select: [p.type], distinct: true)) |> List.flatten()
+    # types = Repo.all(from(p in Pet, select: [p.type], distinct: true)) |> List.flatten()
+    types = pets |> Enum.map(& &1.type) |> Enum.uniq()
 
     create table("pet_types") do
       add :name, :string

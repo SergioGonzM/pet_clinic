@@ -5,18 +5,22 @@ defmodule PetClinicWeb.PetHealthExpertController do
   alias PetClinic.PetClinicService.PetHealthExpert
 
   def index(conn, _params) do
-    pethealthexperts = PetClinicService.list_pethealthexperts()
+    pethealthexperts = PetClinicService.list_pethealthexperts(preloads: [:specialities])
     render(conn, "index.html", pethealthexperts: pethealthexperts)
   end
 
   def new(conn, _params) do
     changeset = PetClinicService.change_pet_health_expert(%PetHealthExpert{})
-    pet_types = PetClinicService.list_pet_types()
+    # pet_health_expert = PetClinicService.get_pet_health_expert!(id)
+    pet_types =
+      PetClinicService.list_pet_types() |> Map.new(fn %{id: id, name: name} -> {name, id} end)
+
     render(conn, "new.html", pet_types: pet_types, changeset: changeset)
   end
 
   def create(conn, %{"pet_health_expert" => pet_health_expert_params}) do
-    pet_types = PetClinicService.list_pet_types()
+    pet_types =
+      PetClinicService.list_pet_types() |> Map.new(fn %{id: id, name: name} -> {name, id} end)
 
     case PetClinicService.create_pet_health_expert(pet_health_expert_params) do
       {:ok, pet_health_expert} ->
@@ -30,13 +34,16 @@ defmodule PetClinicWeb.PetHealthExpertController do
   end
 
   def show(conn, %{"id" => id}) do
-    pet_health_expert = PetClinicService.get_pet_health_expert!(id)
+    pet_health_expert = PetClinicService.get_preload_expert!(id, preloads: :specialities)
     render(conn, "show.html", pet_health_expert: pet_health_expert)
   end
 
   def edit(conn, %{"id" => id}) do
-    pet_health_expert = PetClinicService.get_pet_health_expert!(id)
-    pet_types = PetClinicService.list_pet_types()
+    pet_health_expert = PetClinicService.get_preload_expert!(id, preloads: :specialities)
+
+    pet_types =
+      PetClinicService.list_pet_types() |> Map.new(fn %{id: id, name: name} -> {name, id} end)
+
     changeset = PetClinicService.change_pet_health_expert(pet_health_expert)
 
     render(conn, "edit.html",
@@ -47,8 +54,10 @@ defmodule PetClinicWeb.PetHealthExpertController do
   end
 
   def update(conn, %{"id" => id, "pet_health_expert" => pet_health_expert_params}) do
-    pet_health_expert = PetClinicService.get_pet_health_expert!(id)
-    pet_types = PetClinicService.list_pet_types()
+    pet_health_expert = PetClinicService.get_preload_expert!(id, preloads: :specialities)
+
+    pet_types =
+      PetClinicService.list_pet_types() |> Map.new(fn %{id: id, name: name} -> {name, id} end)
 
     case PetClinicService.update_pet_health_expert(pet_health_expert, pet_health_expert_params) do
       {:ok, pet_health_expert} ->

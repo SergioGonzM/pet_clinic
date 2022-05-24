@@ -7,15 +7,13 @@ defmodule PetClinicWeb.PetHealthExpertControllerTest do
     age: 42,
     email: "some email",
     name: "some name",
-    sex: "some sex",
-    specialities: "some specialities"
+    sex: :male
   }
   @update_attrs %{
     age: 43,
     email: "some updated email",
     name: "some updated name",
-    sex: "some updated sex",
-    specialities: "some updated specialities"
+    sex: :male
   }
   @invalid_attrs %{age: nil, email: nil, name: nil, sex: nil, specialities: nil}
 
@@ -42,7 +40,7 @@ defmodule PetClinicWeb.PetHealthExpertControllerTest do
       assert redirected_to(conn) == Routes.pet_health_expert_path(conn, :show, id)
 
       conn = get(conn, Routes.pet_health_expert_path(conn, :show, id))
-      assert html_response(conn, 200) =~ "Show Pet health expert"
+      assert html_response(conn, 200) =~ "Pet Health Expert"
     end
 
     test "renders errors when data is invalid", %{conn: conn} do

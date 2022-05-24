@@ -18,10 +18,13 @@
   <%= error_tag f, :email %>
 
   <%= label f, :specialities %>
-
+  <%= multiple_select(f, :specialities, @pet_types, selected: (if assigns[:pet_health_expert], 
+                      do: Enum.map(@pet_health_expert.specialities, &(&1.id)), else: []))%>
+  <%= error_tag f, :specialities %>
 
   <%= label f, :sex %>
   <%= text_input f, :sex %>
+  <% select f, :sex, [:male, :female]%>
   <%= error_tag f, :sex %>
 
   <div>

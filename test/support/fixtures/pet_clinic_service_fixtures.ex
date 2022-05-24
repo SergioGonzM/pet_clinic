@@ -8,13 +8,17 @@ defmodule PetClinic.PetClinicServiceFixtures do
   Generate a pet.
   """
   def pet_fixture(attrs \\ %{}) do
+    pet_type = pet_type_fixture()
+    owner = owner_fixture()
+
     {:ok, pet} =
       attrs
       |> Enum.into(%{
         age: 42,
         name: "some name",
-        sex: "some sex",
-        type: "some type"
+        sex: :male,
+        type_id: pet_type.id,
+        owner_id: owner.id
       })
       |> PetClinic.PetClinicService.create_pet()
 
@@ -31,8 +35,7 @@ defmodule PetClinic.PetClinicServiceFixtures do
         age: 42,
         email: "some email",
         name: "some name",
-        sex: "some sex",
-        specialities: "some specialities"
+        sex: :male
       })
       |> PetClinic.PetClinicService.create_pet_health_expert()
 
@@ -54,5 +57,16 @@ defmodule PetClinic.PetClinicServiceFixtures do
       |> PetClinic.PetClinicService.create_owner()
 
     owner
+  end
+
+  def pet_type_fixture(attrs \\ %{}) do
+    {:ok, pet_type} =
+      attrs
+      |> Enum.into(%{
+        name: "some name"
+      })
+      |> PetClinic.PetClinicService.create_type()
+
+    pet_type
   end
 end

@@ -3,9 +3,9 @@ defmodule PetClinicWeb.AppointmentControllerTest do
 
   import PetClinic.AppointmentServiceFixtures
 
-  @create_attrs %{}
-  @update_attrs %{}
-  @invalid_attrs %{}
+  @create_attrs %{datetime: ~U[2022-04-26 01:58:00Z]}
+  @update_attrs %{datetime: ~U[2022-04-28 01:58:00Z]}
+  @invalid_attrs %{datetime: nil}
 
   describe "index" do
     test "lists all appointments", %{conn: conn} do

@@ -5,7 +5,7 @@ defmodule PetClinicWeb.PetController do
   alias PetClinic.PetClinicService.Pet
 
   def index(conn, _params) do
-    pets = PetClinicService.list_pets()
+    pets = PetClinicService.list_pets(preloads: [:type, :owner, :preferred_expert])
     render(conn, "index.html", pets: pets)
   end
 
@@ -24,6 +24,15 @@ defmodule PetClinicWeb.PetController do
   end
 
   def create(conn, %{"pet" => pet_params}) do
+    pet_types =
+      PetClinicService.list_pet_types() |> Map.new(fn %{id: id, name: name} -> {name, id} end)
+
+    owners = PetClinicService.list_owners() |> Map.new(fn %{id: id, name: name} -> {name, id} end)
+
+    experts =
+      PetClinicService.list_pethealthexperts()
+      |> Map.new(fn %{id: id, name: name} -> {name, id} end)
+
     case PetClinicService.create_pet(pet_params) do
       {:ok, pet} ->
         conn
@@ -31,15 +40,22 @@ defmodule PetClinicWeb.PetController do
         |> redirect(to: Routes.pet_path(conn, :show, pet))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render(conn, "new.html",
+          pet_types: pet_types,
+          owners: owners,
+          experts: experts,
+          changeset: changeset
+        )
     end
   end
 
   def show(conn, %{"id" => id}) do
-    pet = PetClinicService.get_pet!(id)
+    # pet = PetClinicService.get_pet!(id, preloads: [:type, :owner, :preferred_expert])
+    pet = PetClinicService.get_pet!(id, preloads: [:type])
     owner = PetClinicService.get_owner!(pet.owner_id)
     expert = PetClinicService.get_pet_health_expert!(pet.preferred_expert_id)
     render(conn, "show.html", pet: pet, owner: owner, expert: expert)
+    # render(conn, "show.html", pet: pet)
   end
 
   def edit(conn, %{"id" => id}) do
@@ -59,7 +75,16 @@ defmodule PetClinicWeb.PetController do
   end
 
   def update(conn, %{"id" => id, "pet" => pet_params}) do
-    pet = PetClinicService.get_pet!(id)
+    pet = PetClinicService.get_pet!(id, preloads: :type)
+
+    pet_types =
+      PetClinicService.list_pet_types() |> Map.new(fn %{id: id, name: name} -> {name, id} end)
+
+    owners = PetClinicService.list_owners() |> Map.new(fn %{id: id, name: name} -> {name, id} end)
+
+    experts =
+      PetClinicService.list_pethealthexperts()
+      |> Map.new(fn %{id: id, name: name} -> {name, id} end)
 
     case PetClinicService.update_pet(pet, pet_params) do
       {:ok, pet} ->
@@ -68,7 +93,13 @@ defmodule PetClinicWeb.PetController do
         |> redirect(to: Routes.pet_path(conn, :show, pet))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", pet: pet, changeset: changeset)
+        render(conn, "edit.html",
+          pet: pet,
+          pet_types: pet_types,
+          owners: owners,
+          experts: experts,
+          changeset: changeset
+        )
     end
   end
 

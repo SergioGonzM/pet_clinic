@@ -21,13 +21,21 @@ defmodule PetClinic.PetClinicServiceTest do
     end
 
     test "create_pet/1 with valid data creates a pet" do
-      valid_attrs = %{age: 42, name: "some name", sex: "some sex", type: "some type"}
+      pet_type = pet_type_fixture()
+      owner = owner_fixture()
+
+      valid_attrs = %{
+        age: 42,
+        name: "some name",
+        sex: :male,
+        type_id: pet_type.id,
+        owner_id: owner.id
+      }
 
       assert {:ok, %Pet{} = pet} = PetClinicService.create_pet(valid_attrs)
       assert pet.age == 42
       assert pet.name == "some name"
-      assert pet.sex == "some sex"
-      assert pet.type == "some type"
+      assert pet.sex == :male
     end
 
     test "create_pet/1 with invalid data returns error changeset" do
@@ -40,15 +48,13 @@ defmodule PetClinic.PetClinicServiceTest do
       update_attrs = %{
         age: 43,
         name: "some updated name",
-        sex: "some updated sex",
-        type: "some updated type"
+        sex: :male
       }
 
       assert {:ok, %Pet{} = pet} = PetClinicService.update_pet(pet, update_attrs)
       assert pet.age == 43
       assert pet.name == "some updated name"
-      assert pet.sex == "some updated sex"
-      assert pet.type == "some updated type"
+      assert pet.sex == :male
     end
 
     test "update_pet/2 with invalid data returns error changeset" do
@@ -91,8 +97,7 @@ defmodule PetClinic.PetClinicServiceTest do
         age: 42,
         email: "some email",
         name: "some name",
-        sex: "some sex",
-        specialities: "some specialities"
+        sex: :male
       }
 
       assert {:ok, %PetHealthExpert{} = pet_health_expert} =
@@ -101,8 +106,7 @@ defmodule PetClinic.PetClinicServiceTest do
       assert pet_health_expert.age == 42
       assert pet_health_expert.email == "some email"
       assert pet_health_expert.name == "some name"
-      assert pet_health_expert.sex == "some sex"
-      assert pet_health_expert.specialities == "some specialities"
+      assert pet_health_expert.sex == :male
     end
 
     test "create_pet_health_expert/1 with invalid data returns error changeset" do
@@ -117,8 +121,7 @@ defmodule PetClinic.PetClinicServiceTest do
         age: 43,
         email: "some updated email",
         name: "some updated name",
-        sex: "some updated sex",
-        specialities: "some updated specialities"
+        sex: :male
       }
 
       assert {:ok, %PetHealthExpert{} = pet_health_expert} =
@@ -127,8 +130,7 @@ defmodule PetClinic.PetClinicServiceTest do
       assert pet_health_expert.age == 43
       assert pet_health_expert.email == "some updated email"
       assert pet_health_expert.name == "some updated name"
-      assert pet_health_expert.sex == "some updated sex"
-      assert pet_health_expert.specialities == "some updated specialities"
+      assert pet_health_expert.sex == :male
     end
 
     test "update_pet_health_expert/2 with invalid data returns error changeset" do

@@ -16,7 +16,7 @@ defmodule PetClinic.AppointmentService.Appointment do
   @doc false
   def changeset(appointment, attrs) do
     appointment
-    |> cast(attrs, [])
-    |> validate_required([])
+    |> cast(attrs, [:datetime])
+    |> validate_required([:datetime])
   end
 end
