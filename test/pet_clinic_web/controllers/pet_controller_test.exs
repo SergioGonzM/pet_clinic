@@ -3,21 +3,7 @@ defmodule PetClinicWeb.PetControllerTest do
 
   import PetClinic.PetClinicServiceFixtures
 
-  # @update_attrs %{
-  #   age: 43,
-  #   name: "some updated name",
-  #   sex: :male,
-  #   owner_id: 1,
-  #   type_id: 2
-  # }
-
-  @invalid_attrs %{age: nil, name: nil, sex: nil}
-
-  # @create_attrs %{
-  #   age: 42,
-  #   name: "some name",
-  #   sex: :female
-  # }
+  @invalid_attrs %{age: nil, name: nil, sex: nil, type: nil}
 
   describe "index" do
     test "lists all pets", %{conn: conn} do
@@ -34,16 +20,28 @@ defmodule PetClinicWeb.PetControllerTest do
   end
 
   describe "create pet" do
-    # test "redirects to show when data is valid", %{conn: conn} do
+    test "redirects to show when data is valid", %{conn: conn} do
+      pet_type = pet_type_fixture()
+      preferred_expert = pet_health_expert_fixture()
+      owner = owner_fixture()
 
-    #   conn = post(conn, Routes.pet_path(conn, :create), pet: @create_attrs)
+      create_attrs = %{
+        age: 42,
+        name: "some name",
+        sex: :male,
+        type_id: pet_type.id,
+        preferred_expert_id: preferred_expert.id,
+        owner_id: owner.id
+      }
 
-    #   assert %{id: id} = redirected_params(conn)
-    #   assert redirected_to(conn) == Routes.pet_path(conn, :show, id)
+      conn = post(conn, Routes.pet_path(conn, :create), pet: create_attrs)
 
-    #   conn = get(conn, Routes.pet_path(conn, :show, id))
-    #   assert html_response(conn, 200) =~ "Show Pet"
-    # end
+      assert %{id: id} = redirected_params(conn)
+      assert redirected_to(conn) == Routes.pet_path(conn, :show, id)
+
+      conn = get(conn, Routes.pet_path(conn, :show, id))
+      assert html_response(conn, 200) =~ "Show Pet"
+    end
 
     test "renders errors when data is invalid", %{conn: conn} do
       conn = post(conn, Routes.pet_path(conn, :create), pet: @invalid_attrs)
@@ -63,13 +61,22 @@ defmodule PetClinicWeb.PetControllerTest do
   describe "update pet" do
     setup [:create_pet]
 
-    # test "redirects when data is valid", %{conn: conn, pet: pet} do
-    #   conn = put(conn, Routes.pet_path(conn, :update, pet), pet: @update_attrs)
-    #   assert redirected_to(conn) == Routes.pet_path(conn, :show, pet)
+    test "redirects when data is valid", %{conn: conn, pet: pet} do
+      preferred_expert = pet_health_expert_fixture()
 
-    #   conn = get(conn, Routes.pet_path(conn, :show, pet))
-    #   assert html_response(conn, 200) =~ "some updated name"
-    # end
+      update_attrs = %{
+        age: 43,
+        name: "some updated name",
+        sex: :male,
+        preferred_expert_id: preferred_expert.id
+      }
+
+      conn = put(conn, Routes.pet_path(conn, :update, pet), pet: update_attrs)
+      assert redirected_to(conn) == Routes.pet_path(conn, :show, pet)
+
+      conn = get(conn, Routes.pet_path(conn, :show, pet))
+      assert html_response(conn, 200) =~ "some updated name"
+    end
 
     # test "renders errors when data is invalid", %{conn: conn, pet: pet} do
     #   conn = put(conn, Routes.pet_path(conn, :update, pet), pet: @invalid_attrs)

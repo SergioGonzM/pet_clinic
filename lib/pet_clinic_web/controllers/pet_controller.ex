@@ -52,9 +52,10 @@ defmodule PetClinicWeb.PetController do
   def show(conn, %{"id" => id}) do
     # pet = PetClinicService.get_pet!(id, preloads: [:type, :owner, :preferred_expert])
     pet = PetClinicService.get_pet!(id, preloads: [:type])
+    pet_types = PetClinicService.list_pet_types()
     owner = PetClinicService.get_owner!(pet.owner_id)
     expert = PetClinicService.get_pet_health_expert!(pet.preferred_expert_id)
-    render(conn, "show.html", pet: pet, owner: owner, expert: expert)
+    render(conn, "show.html", pet: pet, owner: owner, expert: expert, pet_types: pet_types)
     # render(conn, "show.html", pet: pet)
   end
 
